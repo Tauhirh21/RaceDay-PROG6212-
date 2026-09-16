@@ -25,7 +25,7 @@ jobs:
       - name: Check required files exist
         run: |
           missing=0
-          for file in docs/ERD.png docs/API-Endpoint-Plan.md docs/RaceDay-DB-Script.sql; do
+          for file in docs/ERD.png docs/API-Endpoint-Plan.md docs/RaceDay-DB-Script.sql; do 
             if [ ! -f "$file" ]; then
               echo "ERROR: $file not found"
               missing=1
