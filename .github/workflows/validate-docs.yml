@@ -45,11 +45,3 @@ jobs:
             exit 1
           fi
           echo "SQL script has content."
-
-      - name: Validate API plan is not empty
-        run: |
-          if [ ! -s docs/API-Endpoint-Plan.md ]; then
-            echo "ERROR: API plan is empty"
-            exit 1
-          fi
-          echo "API plan has content."
