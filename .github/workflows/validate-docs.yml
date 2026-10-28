@@ -45,13 +45,20 @@ jobs:
       - name: Setup .NET
         uses: actions/setup-dotnet@v4
         with:
+          # IMPORTANT: Change this to 10.0.x if your project targets .NET 10
           dotnet-version: 8.0.x
 
-      - name: Restore dependencies
-        run: dotnet restore
+      - name: Restore API project
+        run: dotnet restore RaceDay.API/RaceDay.API.csproj
 
-      - name: Build solution
-        run: dotnet build --no-restore --configuration Release
+      - name: Build API project
+        run: dotnet build RaceDay.API/RaceDay.API.csproj --no-restore --configuration Release
+
+      - name: Restore Test project
+        run: dotnet restore RaceDay.Api.Tests/RaceDay.Api.Tests.csproj
+
+      - name: Build Test project
+        run: dotnet build RaceDay.Api.Tests/RaceDay.Api.Tests.csproj --no-restore --configuration Release
 
       - name: Run unit tests
-        run: dotnet test --no-build --configuration Release --verbosity normal
+        run: dotnet test RaceDay.Api.Tests/RaceDay.Api.Tests.csproj --no-build --configuration Release --verbosity normal
