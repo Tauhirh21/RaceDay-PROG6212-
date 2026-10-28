@@ -49,6 +49,32 @@ namespace RaceDay.API.Controllers
 
             return Ok(events);
         }
+        // GET: api/events/mine (Organiser only)
+        [HttpGet("mine")]
+        [Authorize(Roles = "Organiser")]
+        public async Task<IActionResult> GetMyEvents()
+        {
+            // Get the ID of the currently logged-in organiser from the JWT token
+            var userId = GetUserId();
+
+            // Filter the database to only return events created by this organiser
+            var events = await _context.Events
+                .Where(e => e.OrganiserId == userId)
+                .Select(e => new
+                {
+                    e.EventId,
+                    e.Name,
+                    e.Description,
+                    e.EventDate,
+                    e.Location,
+                    e.Province,
+                    e.EventType,
+                    e.CreatedAt
+                })
+                .ToListAsync();
+
+            return Ok(events);
+        }
 
         // GET: api/events/{id}
         [HttpGet("{id}")]

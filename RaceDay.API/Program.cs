@@ -19,6 +19,7 @@ builder.Services.AddDbContext<RaceDayDbContext>(options =>
 // ======================================================
 // Uncomment the line below once you have created your TokenService class
 builder.Services.AddScoped<ITokenService, TokenService>();
+builder.Services.AddScoped<BlobService>();
 
 // ======================================================
 // 3. Register Controllers
@@ -71,6 +72,23 @@ builder.Services.AddSwaggerGen(c =>
 
 
 var app = builder.Build();
+// ======================================================
+// AUTOMATIC DATABASE MIGRATION
+// ======================================================
+using (var scope = app.Services.CreateScope())
+{
+    var dbContext = scope.ServiceProvider.GetRequiredService<RaceDayDbContext>();
+    try
+    {
+        // This will create the database and apply all migrations automatically
+        dbContext.Database.Migrate();
+    }
+    catch (Exception ex)
+    {
+        // If the database is still starting up, this prevents the API from crashing immediately
+        Console.WriteLine($"Could not migrate database on startup: {ex.Message}");
+    }
+}
 
 // ======================================================
 // 6. Configure the HTTP Request Pipeline
@@ -91,3 +109,4 @@ app.MapControllers();
 
 app.Run();
 public partial class Program { } // For integration testing
+

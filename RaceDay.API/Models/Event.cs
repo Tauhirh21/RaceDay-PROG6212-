@@ -28,6 +28,7 @@ namespace RaceDay.API.Models
         [Required]
         [MaxLength(20)]
         public string EventType { get; set; } = string.Empty; // "Run", "Walk", or "Cycle"
+        public string? BannerUrl { get; set; }
 
         public int OrganiserId { get; set; }
 
